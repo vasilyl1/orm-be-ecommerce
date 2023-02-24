@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
   // include its associated Product data
   try {
     const allTags = await Tag.findAll({
-      include: [{model: Tag}, {model: ProductTag}, {model: Product}], // include all tags joined by products
+      include: [{model: Product}], // include all tags joined by products
     });
     res.status(200).json(allTags); // return data as json object
   } catch (err) {
@@ -21,7 +21,7 @@ router.get('/:id', async (req, res) => {
   // include its associated Product data
   try {
     const singleTag = await Tag.findByPk(req.params.id, {
-      include: [{model: Tag}, {model: ProductTag}, {model: Product}] // include tag join by its products
+      include: [{model: Product}] // include tag join by its products
     });
     if (!singleTag) {
       res.status(404).json({message: "No tag exists with that id"});
@@ -35,6 +35,12 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   // create a new tag
+  /* req.body should look like this...
+    {
+      tag_name: "FunColor"
+     
+    }
+  */
   try{
     const newTag = await Tag.create({tag_name: req.body.tag_name});
     res.status(200).json(newTag); //returns json of created tag
@@ -45,6 +51,12 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   // update a tag's name by its `id` value
+  /* req.body should look like this...
+    {
+      tag_name: "FunColor"
+     
+    }
+  */
   try {
     const updTag = await Tag.update({
       tag_name: req.body.tag_name
