@@ -5,12 +5,11 @@ const { Category, Product } = require('../../models');
 
 router.get('/', async (req, res) => { // gets categories and products
   try {
-    const categoryProducts = await Category.findAll({
-      include: [{ model: Category }, { model: Product }], // include all categories joined by products
-    });
+    const categoryProducts = await Category.findAll();
+
     res.status(200).json(categoryProducts); // return data as json object
   } catch (err) {
-    res.status(500).json(err); // return server error
+    res.status(501).json(err); // return server error
   }
 
 });
@@ -18,7 +17,7 @@ router.get('/', async (req, res) => { // gets categories and products
 router.get('/:id', async (req, res) => { //gets category by its ID and all its products
   try {
     const categoryProduct = await Category.findByPk(req.params.id, {
-      include: [{ model: Category }, { model: Product }] // include category join by table of all its products
+      include: [{ model: Product }] // include category join by table of all its products
     });
     if (!categoryProduct) {
       res.status(404).json({ message: "No category exists with that id" });
@@ -26,7 +25,7 @@ router.get('/:id', async (req, res) => { //gets category by its ID and all its p
     }
     res.status(200).json(categoryProduct);
   } catch (err) {
-    res.status(500).json(err); // return server error
+    res.status(502).json(err); // return server error
   }
 });
 
@@ -56,7 +55,7 @@ router.put('/:id', async (req, res) => {
     }
     res.status(200).json(updCategory); // returns the updated category
   } catch (err) {
-    res.status(500).json(err); // returns server error
+    res.status(503).json(err); // returns server error
   }
 
 });
@@ -75,7 +74,7 @@ router.delete('/:id', async (req, res) => {
     }
     res.status(200).json(rmCategory); //returns the json with the renoved category
   } catch (err) {
-    res.status(500).json(err); // returns server error
+    res.status(504).json(err); // returns server error
   }
 });
 
